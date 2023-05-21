@@ -18,13 +18,13 @@ class ProductSeeder extends Seeder
                 'name' => 'Product 1',
                 'description' => 'Description for Product 1',
                 'price' => 1999.99,
-                'image_url' => 'https://example.com/product1.jpg',
+                'image_url' => '',
             ],
             [
                 'name' => 'Product 2',
                 'description' => 'Description for Product 2',
                 'price' => 2599.99,
-                'image_url' => 'https://example.com/product2.jpg',
+                'image_url' => '',
             ],
         ];
 
