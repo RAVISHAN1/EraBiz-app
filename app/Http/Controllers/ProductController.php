@@ -41,7 +41,9 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->get();
+        // paginate result
+        $perPage = $request->query('per_page', 10);
+        $products = Product::paginate($perPage);
 
         return response()->json($products);
     }
