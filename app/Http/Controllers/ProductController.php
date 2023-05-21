@@ -92,7 +92,7 @@ class ProductController extends Controller
         try {
             $product = Product::find($id);
 
-            if(!$product){
+            if (!$product) {
                 return response()->json(['error' => 'Product Not Found!'], 404);
             }
 
@@ -110,9 +110,34 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = Product::findOrFail($id);
-        $product->update($request->all());
-        return response()->json($product, 200);
+        try {
+            $data = $request->all();
+            $validator = Validator::make($data, [
+                'name'          => 'required|string',
+                'description'   => 'required|string',
+                'price'         => 'required|numeric',
+                'image_url'     => 'nullable|string',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+
+            // update product
+            $product = Product::findOrFail($id);
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->image_url = $request->image_url;
+            $product->save();
+
+            return response()->json($product->refresh(), 201);
+        } catch (\Throwable $th) {
+            // Log the exception
+            Log::error('An error occurred while updating a product | ', ['exception' => $th->getMessage()]);
+            // Handle the exception
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
     }
 
     /**
