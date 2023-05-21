@@ -89,7 +89,20 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        return Product::findOrFail($id);
+        try {
+            $product = Product::find($id);
+
+            if(!$product){
+                return response()->json(['error' => 'Product Not Found!'], 404);
+            }
+
+            return $product;
+        } catch (\Throwable $th) {
+            // Log the exception
+            Log::error('An error occurred while updating a product | ', ['exception' => $th->getMessage()]);
+            // Handle the exception
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
     }
 
     /**
