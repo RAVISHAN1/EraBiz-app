@@ -27,4 +27,5 @@ Route::group(['prefix' => '/products', 'as' => 'products.'], function () {
     Route::get('/{id}', [ProductController::class, 'show'])->name('show');
     Route::post('/', [ProductController::class, 'store'])->name('store');
     Route::put('/{id}', [ProductController::class, 'update'])->name('update');
+    Route::delete('/{id}', [ProductController::class, 'destroy'])->name('delete');
 });

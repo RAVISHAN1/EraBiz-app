@@ -145,7 +145,14 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Product::findOrFail($id)->delete();
-        return response()->json(['message' => 'Product deleted'], 200);
+        try {
+            Product::findOrFail($id)->delete();
+            return response()->json(['message' => 'Product deleted'], 200);
+        } catch (\Throwable $th) {
+            // Log the exception
+            Log::error('An error occurred while deleting a product | ', ['exception' => $th->getMessage()]);
+            // Handle the exception
+            return response()->json(['error' => 'An error occurred'], 500);
+        }
     }
 }
