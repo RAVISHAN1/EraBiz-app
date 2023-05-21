@@ -66,14 +66,11 @@ class ProductController extends Controller
 
             // save image
             if ($request->hasFile('image_url')) {
-                $image = $request->file('image_url');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $url = $image->move(public_path('images'), $imageName);
-
-                // get image url
+                $url = $this->uploadProductImage($request->file('image_url'));
                 $data['image_url'] = $url;
             }
 
+            // create a new product
             $product = Product::create($data);
 
             return response()->json($product->refresh(), 201);
@@ -116,7 +113,6 @@ class ProductController extends Controller
                 'name'          => 'required|string',
                 'description'   => 'required|string',
                 'price'         => 'required|numeric',
-                'image_url'     => 'nullable|string',
             ]);
 
             if ($validator->fails()) {
@@ -128,7 +124,6 @@ class ProductController extends Controller
             $product->name = $request->name;
             $product->description = $request->description;
             $product->price = $request->price;
-            $product->image_url = $request->image_url;
             $product->save();
 
             return response()->json($product->refresh(), 201);
@@ -176,13 +171,10 @@ class ProductController extends Controller
 
             // Upload the image
             if ($request->hasFile('image')) {
-
-                $diskName = 'public';
-                $disk = Storage::disk('public');
-                $path = $request->file('image')->storePublicly('/images/products', $diskName);
+                $url = $this->uploadProductImage($request->file('image'));
 
                 // Save the image path to the product
-                $product->image_url = $disk->url($path);
+                $product->image_url = $url;
                 $product->save();
 
                 return response()->json(['message' => 'Image uploaded successfully'], 200);
@@ -192,6 +184,18 @@ class ProductController extends Controller
             Log::error('An error occurred while uploading a product image | ', ['exception' => $th->getMessage()]);
             // Handle the exception
             return response()->json(['message' => 'Image upload failed'], 400);
+        }
+    }
+
+    public function uploadProductImage($image)
+    {
+        try {
+            $diskName = 'public';
+            $disk = Storage::disk('public');
+            $path = $image->storePublicly('/images/products', $diskName);
+            return $disk->url($path);
+        } catch (\Throwable $th) {
+            return null;
         }
     }
 }
