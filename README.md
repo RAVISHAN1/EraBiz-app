@@ -21,4 +21,12 @@ To set up the Laravel Product Management REST APIs project, follow these steps:
 - Optionally, run php artisan db:seed to populate the database with sample data.
 - Start the development server by running php artisan serve.
 
-Happy coding!
+## Usage
+ 
+ To use the Laravel Product Management REST APIs, follow these guidelines:
+
+- Create an user by using **/api/register** endpoint.
+- Obtain an access token by authenticating with valid credentials via the **/api/login** endpoint.
+- Include the access token in the Authorization header for subsequent requests as a **bearer token**.
+- Make requests to the desired endpoints using tools like Postman or cURL.
+- Ensure to include the **Accept: application/json** header in your requests to indicate that you expect a JSON response.
