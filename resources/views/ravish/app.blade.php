@@ -55,8 +55,6 @@
 
                 window.location.href = '/login';
                 console.log(response.message);
-
-                // Perform any other actions after successful logout
             },
             error: function(xhr) {
                 // Handle the error

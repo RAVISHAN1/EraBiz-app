@@ -79,9 +79,7 @@
     });
 
     $(document).ready(function() {
-        if (sessionStorage.getItem('access_token')) {
-            window.location.href = '/home';
-        }
+        sessionStorage.removeItem('access_token');
     });
 </script>
 
