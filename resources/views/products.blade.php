@@ -64,7 +64,7 @@
                     row.append($('<td>').text(item.price));
 
                     // Add the product image
-                    var img = $('<td><img src="' + item.image_url + '" alt="' + item.name + '" style="width: 60px; height: 60px"></td>');
+                    var img = $('<img src="' + item.image_url + '" alt="' + item.name + '" style="width: 60px; height: 60px">');
                     var button_img = $('<button type="button" class="btn btn-sm btn-secondary mx-2">Danger</button>').text('upload');
                     button_img.click(function() {
                         editImage(item.id);

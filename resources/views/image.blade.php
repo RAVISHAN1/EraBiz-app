@@ -10,7 +10,7 @@
 
             <form id="uploadForm" enctype="multipart/form-data">
                 <input type="hidden" id="id" name="id">
-                <input type="file" name="image">
+                <input type="file" name="image" accept="image/*">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success">Upload</button>
