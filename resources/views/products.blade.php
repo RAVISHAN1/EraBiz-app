@@ -30,6 +30,7 @@
     </main>
     @include('create')
     @include('edit')
+    @include('image')
 </div>
 
 <script>
@@ -63,8 +64,12 @@
                     row.append($('<td>').text(item.price));
 
                     // Add the product image
-                    var img = $('<td><img src="' + item.image_url + '" alt="' + item.name + '"></td>');
-                    row.append($('<td>').append(img));
+                    var img = $('<td><img src="' + item.image_url + '" alt="' + item.name + '" style="width: 60px; height: 60px"></td>');
+                    var button_img = $('<button type="button" class="btn btn-sm btn-secondary mx-2">Danger</button>').text('upload');
+                    button_img.click(function() {
+                        editImage(item.id);
+                    });
+                    row.append($('<td>').append(img, button_img));
 
                     // delete button element append to the row
                     var button_1 = $('<button type="button" class="btn btn-warning mx-2">Danger</button>').text('Edit');
@@ -191,6 +196,41 @@
                 // Refresh the table after successful update
                 getAllProducts();
             }
+        });
+    });
+
+    // Function to change image
+    function editImage(productId) {
+        $('#imageModal #id').val(productId);
+        $('#imageModal').modal('show');
+    }
+
+    $(document).ready(function() {
+        $('#uploadForm').submit(function(event) {
+            event.preventDefault();
+
+            var productId = $('#id').val();
+            var formData = new FormData($(this)[0]);
+
+            $.ajax({
+                url: '/api/products/image/' + productId,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'Authorization': 'Bearer ' + getAccessToken()
+                },
+                success: function(response) {
+                    $('#imageModal').modal('hide');
+                    getAllProducts();
+                    //alert(response.message);
+                },
+                error: function(xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    alert(err.Message);
+                }
+            });
         });
     });
 
