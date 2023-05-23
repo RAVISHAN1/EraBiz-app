@@ -27,20 +27,20 @@
                             <form id="registerForm">
                                 <div class="form-group">
                                     <label for="loginName">Name</label>
-                                    <input type="text" class="form-control" id="loginName" placeholder="Enter name">
+                                    <input type="text" class="form-control" id="loginName" placeholder="Enter name" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="loginEmail">Email address</label>
-                                    <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                                    <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email" required>
                                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="loginPassword">Password</label>
-                                    <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                                    <input type="password" class="form-control" id="loginPassword" placeholder="Password" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="loginPasswordConfirm">Confirm Password</label>
-                                    <input type="password" class="form-control" id="loginPasswordConfirm" placeholder="Password">
+                                    <input type="password" class="form-control" id="loginPasswordConfirm" placeholder="Password" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
