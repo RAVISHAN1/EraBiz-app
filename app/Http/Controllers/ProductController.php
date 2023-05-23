@@ -20,30 +20,32 @@ class ProductController extends Controller
         // search by name
         if ($request->has('name')) {
             $name = $request->name;
-            $query->where(function ($q) use ($name) {
-                $q->where('name', 'LIKE', "%$name%");
-            });
+            $query->where('name', 'LIKE', "%$name%");
         }
 
         // filter by min price
         if ($request->has('min_price')) {
             $min_price = $request->min_price;
-            $query->where(function ($q) use ($min_price) {
-                $q->where('price', '>=', $min_price);
-            });
+            $query->where('price', '>=', $min_price);
         }
 
         // filter by max price
         if ($request->has('max_price')) {
             $max_price = $request->max_price;
-            $query->where(function ($q) use ($max_price) {
-                $q->where('price', '<=', $max_price);
-            });
+            $query->where('price', '<=', $max_price);
+        }
+
+        if ($request->has('order')) {
+            if ($request->order == '1') {
+                $query->orderBy('price');
+            } else if ($request->order == '2') {
+                $query->orderByDesc('price');
+            }
         }
 
         // paginate result
         $perPage = $request->query('per_page', 10);
-        $products = Product::paginate($perPage);
+        $products = $query->paginate($perPage);
 
         return response()->json($products);
     }
@@ -59,7 +61,7 @@ class ProductController extends Controller
                 'name'          => 'required|string',
                 'description'   => 'required|string',
                 'price'         => 'required|numeric',
-                'image_url'     => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                // 'image_url'     => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             if ($validator->fails()) {
