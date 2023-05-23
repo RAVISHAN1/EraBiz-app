@@ -212,9 +212,5 @@
 
         getAllProducts();
     });
-
-    function getAccessToken() {
-        return sessionStorage.getItem('access_token');
-    }
 </script>
 @stop

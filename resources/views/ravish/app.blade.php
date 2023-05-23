@@ -29,7 +29,9 @@
             </ul>
 
             <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+                @if(!Auth::user())
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="logout()">Logout</button>
+                @endif
             </form>
         </div>
     </nav>
@@ -42,5 +44,40 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
     <!-- <script src="js/main.js"></script> -->
 </body>
+
+<script>
+    function logout() {
+        $.ajax({
+            url: '/api/logout',
+            type: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + getAccessToken()
+            },
+            success: function(response) {
+                sessionStorage.removeItem('access_token');
+
+                window.location.href = '/login';
+                console.log(response.message);
+
+                // Perform any other actions after successful logout
+            },
+            error: function(xhr) {
+                // Handle the error
+                console.log(xhr.responseJSON.message);
+            }
+        });
+
+    }
+
+    $(document).ready(function() {
+        if (!getAccessToken()) {
+            window.location.href = '/login';
+        }
+    });
+
+    function getAccessToken() {
+        return sessionStorage.getItem('access_token');
+    }
+</script>
 
 </html>
