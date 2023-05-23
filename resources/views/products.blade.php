@@ -140,18 +140,21 @@
     $('#addProductForm').submit(function(event) {
         event.preventDefault();
 
-        var formData = {
-            name: $('#productName').val(),
-            description: $('#productDes').val(),
-            price: $('#productPrice').val(),
-            image_url: null,
-        };
+        // var formData = {
+        //     name: $('#productName').val(),
+        //     description: $('#productDes').val(),
+        //     price: $('#productPrice').val(),
+        //     image_url: null,
+        // };
+        var formData = new FormData($(this)[0]);
 
         // Send the data via Ajax
         $.ajax({
             url: '/api/products',
             type: 'POST',
             data: formData,
+            contentType: false,
+            processData: false,
             headers: {
                 'Authorization': 'Bearer ' + getAccessToken()
             },
@@ -160,8 +163,9 @@
                 $('#productName').val('');
                 $('#productDes').val('');
                 $('#productPrice').val('');
+                $('#image-input').val('');
 
-                $('#editModal').modal('hide');
+                $('#createModal').modal('hide');
 
                 // Refresh the table after successful product addition
                 getAllProducts();
@@ -205,32 +209,30 @@
         $('#imageModal').modal('show');
     }
 
-    $(document).ready(function() {
-        $('#uploadForm').submit(function(event) {
-            event.preventDefault();
+    $('#uploadForm').submit(function(event) {
+        event.preventDefault();
 
-            var productId = $('#id').val();
-            var formData = new FormData($(this)[0]);
+        var productId = $('#id').val();
+        var formData = new FormData($(this)[0]);
 
-            $.ajax({
-                url: '/api/products/image/' + productId,
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'Authorization': 'Bearer ' + getAccessToken()
-                },
-                success: function(response) {
-                    $('#imageModal').modal('hide');
-                    getAllProducts();
-                    //alert(response.message);
-                },
-                error: function(xhr, status, error) {
-                    var err = eval("(" + xhr.responseText + ")");
-                    alert(err.Message);
-                }
-            });
+        $.ajax({
+            url: '/api/products/image/' + productId,
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'Authorization': 'Bearer ' + getAccessToken()
+            },
+            success: function(response) {
+                $('#imageModal').modal('hide');
+                getAllProducts();
+                //alert(response.message);
+            },
+            error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+            }
         });
     });
 

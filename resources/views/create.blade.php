@@ -25,7 +25,7 @@
                         <input type="number" class="form-control" id="productPrice" name="price" step=".01" required>
                     </div>
 
-                    <input type="file" name="image" id="image-input" accept="image/*">
+                    <input type="file" name="image_url" id="image-input" accept="image/*">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
