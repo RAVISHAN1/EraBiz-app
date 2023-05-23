@@ -20,11 +20,15 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="container mt-5">
-                    <h2 class="text-center mt-3">Login</h2>
+                    <h2 class="text-center mt-3">SignUp</h2>
                     <div class="row">
                         <div class="col-3"></div>
                         <div class="col-6">
-                            <form id="loginForm">
+                            <form id="registerForm">
+                                <div class="form-group">
+                                    <label for="loginName">Name</label>
+                                    <input type="text" class="form-control" id="loginName" placeholder="Enter name">
+                                </div>
                                 <div class="form-group">
                                     <label for="loginEmail">Email address</label>
                                     <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email">
@@ -34,10 +38,11 @@
                                     <label for="loginPassword">Password</label>
                                     <input type="password" class="form-control" id="loginPassword" placeholder="Password">
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <div class="float-right">
-                                    <a href="/register">create new account</a>
+                                <div class="form-group">
+                                    <label for="loginPasswordConfirm">Confirm Password</label>
+                                    <input type="password" class="form-control" id="loginPasswordConfirm" placeholder="Password">
                                 </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
                         <div class="col-3"></div>
@@ -50,30 +55,33 @@
 </body>
 <script>
     // Function to handle product store
-    $('#loginForm').submit(function(event) {
+    $('#registerForm').submit(function(event) {
         event.preventDefault();
 
         var formData = {
+            name: $('#loginName').val(),
             email: $('#loginEmail').val(),
             password: $('#loginPassword').val(),
+            password_confirmation: $('#loginPasswordConfirm').val(),
         };
 
         // Send the data via Ajax
         $.ajax({
-            url: '/api/login',
+            url: '/api/register',
             type: 'POST',
             data: formData,
             success: function(response) {
                 // Clear the form fields
                 $('#loginEmail').val('');
                 $('#loginPassword').val('');
+                $('#loginPasswordConfirm').val('');
 
                 sessionStorage.setItem('access_token', response.access_token)
 
                 window.location.href = '/home';
             },
-            error: function(response) {
-                alert('Invalid credentials');
+            error: function(xhr, status, error) {
+                alert(error);
             }
         });
     });
